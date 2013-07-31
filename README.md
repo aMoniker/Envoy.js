@@ -24,21 +24,21 @@ That's the basic premise. Envoy.js also adds a few extra conveniences, and expos
 
 ### API
 
-__`envoy.offer(key, callback, namespace);`__
-`key` _(required)_: Each key can be used by multiple offers. It's probably best to use a string, but technically this could be any value.
-`callback` _(required)_: If it's a function, it will be called and the result will be returned during `solicit`. All other types will be returned directly.
-`namespace` _(optional)_: A way to separate values that share the same key. If included in a call to `solicit`, the namespace will act as a filter and will only return offers with the same namespace.
+`envoy.offer(key, callback, namespace);`
+- `key` _(required)_: Each key can be used by multiple offers. It's probably best to use a string, but technically this could be any value.
+- `callback` _(required)_: If it's a function, it will be called and the result will be returned during `solicit`. All other types will be returned directly.
+- `namespace` _(optional)_: A way to separate values that share the same key. If included in a call to `solicit`, the namespace will act as a filter and will only return offers with the same namespace.
 
-__`envoy.withdraw(key, namespace);`__
-`key` _(required)_: Withdraw all offers made for this key.
-`namespace` _(optional)_: Only withdraw offers that match the given key & namespace.
+`envoy.withdraw(key, namespace);`
+- `key` _(required)_: Withdraw all offers made for this key.
+- `namespace` _(optional)_: Only withdraw offers that match the given key & namespace.
 
-__`envoy.solicit(key ...);`__
-`key` _(required)_: Get offers for this key.
-The following three arguments are all _optional_ and can be combined in _any_ order after `key`:
-`first_result`: Boolean value. If present (and `true`) then only the first offer (FIFO) will be returned.
-`namespace`: String. Only return offers with this namespace.
-`callback`: Function. If present, invoke this function using the returned offers as the only argument.
+`envoy.solicit(key ...);`
+- `key` _(required)_: Get offers for this key.
+- These three arguments are all _optional_ and can be combined in _any_ order after `key`:
+  - `first_result`: Boolean value. If present (and `true`) then only the first offer (FIFO) will be returned.
+  - `namespace`: String. Only return offers with this namespace.
+  - `callback`: Function. If present, invoke this function using the returned offers as the only argument.
 
 ### Example
 
