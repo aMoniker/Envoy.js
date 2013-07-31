@@ -12,7 +12,7 @@ envoy.offer('named_key', { any: 'value' });
 var result = envoy.solicit('named_key');
 ```
 
-You can offer multiple items using the same key, and calling `solicit` on that key will retrieve all those items.
+You can offer multiple items using the same key, and calling `envoy.solicit` on that key will retrieve all those items.
 
 ```javascript
 envoy.offer('multiple_values', { something: 'good' });
@@ -26,8 +26,8 @@ That's the basic premise. Envoy.js also adds a few extra conveniences, and expos
 
 `envoy.offer(key, callback, namespace);`
 - `key` _(required)_: Each key can be used by multiple offers. It's probably best to use a string, but technically this could be any value.
-- `callback` _(required)_: If it's a function, it will be called and the result will be returned during `solicit`. All other types will be returned directly.
-- `namespace` _(optional)_: A way to separate values that share the same key. If included in a call to `solicit`, the namespace will act as a filter and will only return offers with the same namespace.
+- `callback` _(required)_: If it's a function, it will be called and the result will be returned during `envoy.solicit`. All other types will be returned directly.
+- `namespace` _(optional)_: A way to separate values that share the same key. If included in a call to `envoy.solicit`, the namespace will act as a filter and will only return offers with the same namespace.
 
 `envoy.withdraw(key, namespace);`
 - `key` _(required)_: Withdraw all offers made for this key.
