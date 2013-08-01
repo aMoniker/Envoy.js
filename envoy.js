@@ -71,6 +71,21 @@ if (_ && _.clone && Backbone && Backbone.Events) {
         }
     }
 
+    envoy._storage = {};
+
+    envoy.store = function(key, value) {
+        envoy._storage[key] = value;
+    }
+
+    envoy.fetch = function(key) {
+        return envoy._storage[key];
+    }
+
+    envoy.erase = function(key) {
+        delete envoy._storage[key];
+        return true;
+    }
+
     var global_object = typeof window !== 'undefined' ? window
                       : typeof GLOBAL !== 'undefined' ? GLOBAL
                       : {};

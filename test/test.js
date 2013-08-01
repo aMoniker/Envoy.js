@@ -12,6 +12,7 @@ require('../envoy.js');
 var test_offers_exists = function() {
     should.exist(envoy._offers);
     envoy._offers.should.be.a('object');
+    envoy._offers.should.eql({});
 }
 
 var test_offer_exists = function(key, callback, namespace) {
@@ -56,7 +57,7 @@ var clear_offers = function() {
     envoy._offers = {};
 }
 
-describe('Envoy.setup', function() {
+describe('envoy.setup', function() {
     describe('properties', function() {
         it('should be available globally', function() {
             should.exist(global_object.envoy);
@@ -80,7 +81,7 @@ describe('Envoy.setup', function() {
     });
 });
 
-describe('Envoy.offer', function() {
+describe('envoy.offer', function() {
     beforeEach(function() {
         test_offers_exists();
     });
@@ -136,7 +137,7 @@ describe('Envoy.offer', function() {
     });
 });
 
-describe('Envoy.withdraw', function() {
+describe('envoy.withdraw', function() {
     beforeEach(function() {
         test_offers_exists();
         add_namespaced_offers();
@@ -175,7 +176,7 @@ describe('Envoy.withdraw', function() {
     });
 });
 
-describe('Envoy.solicit', function() {
+describe('envoy.solicit', function() {
     beforeEach(function() {
         test_offers_exists();
         add_namespaced_offers();
@@ -235,5 +236,126 @@ describe('Envoy.solicit', function() {
         envoy.solicit('test_key', 'namespace_1', the_callback, true);
         envoy.solicit('test_key', the_callback, 'namespace_1', true);
         envoy.solicit('test_key', the_callback, true, 'namespace_1');
+    });
+});
+
+var test_storage_exists = function() {
+    should.exist(envoy._storage);
+    envoy._storage.should.be.a('object');
+    envoy._storage.should.eql({});
+}
+
+var test_stored_value = function(key, value) {
+    should.exist(envoy._storage);
+    should.exist(envoy._storage[key]);
+    envoy._storage[key].should.eql(value);
+}
+
+var store_test_values = function() {
+    envoy.store(true, false);
+    envoy.store(1337, 2600);
+    envoy.store('test_key', 'test_val');
+    envoy.store({}, { hello: 'there' });
+    envoy.store([], [1,2,3]);
+    envoy.store(null, null);
+    envoy.store(undefined, undefined);
+}
+
+var clear_storage = function() {
+    envoy._storage = {};
+}
+
+describe('envoy.store', function() {
+    beforeEach(function() {
+        test_storage_exists();
+    });
+
+    afterEach(function() {
+        clear_storage();
+    });
+
+    it('should accept booleans', function() {
+        envoy.store(true, false);
+        test_stored_value(true, false);
+    });
+
+    it('should accept numbers', function() {
+        envoy.store(1337, 2600);
+        test_stored_value(1337, 2600);
+    });
+
+    it('should accept strings', function() {
+        envoy.store('test_key', 'test_val');
+        test_stored_value('test_key', 'test_val');
+    });
+
+    it('should accept objects', function() {
+        envoy.store({}, { hello: 'there' });
+        test_stored_value({}, { hello: 'there' });
+    });
+
+    it('should accept arrays', function() {
+        envoy.store([], [1,2,3]);
+        test_stored_value([], [1,2,3]);
+    });
+
+    it('should accept nulls', function() {
+        envoy.store(null, null);
+        should.exist(envoy._storage);
+        should.equal(envoy._storage[null], null);
+    });
+
+    it('should accept undefineds', function() {
+        envoy.store(undefined, undefined);
+        should.exist(envoy._storage);
+        should.equal(envoy._storage[undefined], undefined);
+    });
+});
+
+describe('envoy.fetch', function() {
+    beforeEach(function() {
+        test_storage_exists();
+        store_test_values();
+    });
+
+    afterEach(function() {
+        clear_storage();
+    });
+
+    it('should fetch the right values', function() {
+        var stored = [
+             { key: true, val: false }
+            ,{ key: 1337, val: 2600 }
+            ,{ key: 'test_key', val: 'test_val' }
+            ,{ key: {}, val: { hello: 'there' } }
+            ,{ key: [], val: [1,2,3] }
+            ,{ key: null, val: null }
+            ,{ key: undefined, val: undefined }
+        ];
+
+        _.each(stored, function(s) {
+            var fetched = envoy.fetch(s.key);
+            if (fetched) {
+                fetched.should.eql(s.val);
+            } else {
+                should.equal(fetched, s.val);
+            }
+        });
+    })
+});
+
+describe('envoy.erase', function() {
+    beforeEach(function() {
+        test_storage_exists();
+        store_test_values();
+    });
+
+    afterEach(function() {
+        clear_storage();
+    });
+
+    it('should delete values', function() {
+        envoy.erase('test_key');
+        should.not.exist(envoy._storage['test_key']);
     });
 });
