@@ -1,0 +1,22 @@
+{
+    "name": "envoy.js",
+    "version": "0.1.1",
+    "author": "Jim Greenleaf <james.a.greenleaf@gmail.com>",
+    "description": "A reverse pub/sub wrapper for Backbone.Events",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/aMoniker/Envoy.js.git"
+    },
+    "dependencies": {
+        "underscore": "1.5.1",
+        "backbone": "1.0.0"
+    },
+    "devDependencies": {
+        "mocha": "1.12.0",
+        "should": "1.2.2"
+    },
+    "scripts": {
+        "test": "make test"
+    },
+    "license": "MIT"
+}
