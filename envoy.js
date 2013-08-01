@@ -35,9 +35,9 @@ if (_ && _.clone && Backbone && Backbone.Events) {
         if (_.size(envoy._offers[key]) <= 0) { return undefined; }
 
         var args = Array.prototype.slice.call(arguments, 1, 4);
-        var first_result = _.find(args, function(a) { return typeof a === 'boolean'; });
-        var namespace = _.find(args, function(a) { return typeof a === 'string'; });
-        var callback = _.find(args, function(a) { return typeof a === 'function'; });
+        var first_result = _.find(args, function(a) { return typeof a === 'boolean';  });
+        var namespace    = _.find(args, function(a) { return typeof a === 'string';   });
+        var callback     = _.find(args, function(a) { return typeof a === 'function'; });
 
         var offers = [];
         _.every(envoy._offers[key], function(offer, idx) {
@@ -48,7 +48,10 @@ if (_ && _.clone && Backbone && Backbone.Events) {
                     offers.push(offer.callback);
                 }
 
-                if (first_result) { return false; }
+                if (first_result) {
+                    offers = offers[0];
+                    return false;
+                }
             }
             return true;
         });
