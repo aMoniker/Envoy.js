@@ -75,6 +75,7 @@ if (_ && _.clone && Backbone && Backbone.Events) {
 
     envoy.store = function(key, value) {
         envoy._storage[key] = value;
+        return value;
     }
 
     envoy.fetch = function(key) {
