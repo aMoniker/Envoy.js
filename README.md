@@ -1,5 +1,7 @@
 # Envoy.js
 
+[![Build Status](https://api.travis-ci.org/aMoniker/Envoy.js.png)](https://api.travis-ci.org/aMoniker/Envoy.js)
+
 Envoy.js is a simple wrapper for [Backbone.Events](http://backbonejs.org/#Events) which provides a convenient global mediator object (`window.envoy`) and adds a reverse pub/sub pattern dubbed __offer/solicit__.
 
 Since it uses Backbone.Events (and some Underscore methods) it requires both [Backbone.js](http://backbonejs.org/) and [Underscore.js](http://underscorejs.org/).
