@@ -17,15 +17,23 @@ if (_ && _.clone && Backbone && Backbone.Events) {
         var withdrawn = false;
         namespace = namespace || undefined;
 
-        _.each(envoy._offers[key], function(offer, idx) {
-            if (offer.namespace === namespace) {
-                withdrawn = true;
-                envoy._offers[key].splice(idx, 1);
-            }
-        });
-
-        if (_.size(envoy._offers[key]) <= 0) {
+        if (namespace === undefined) {
             delete envoy._offers[key];
+        } else {
+            var filtered_offers = [];
+            _.each(envoy._offers[key], function(offer, idx) {
+                if (offer.namespace === namespace) {
+                    withdrawn = true; // don't add to filtered_offers
+                } else {
+                    filtered_offers.push(envoy._offers[key][idx]);
+                }
+            });
+
+            envoy._offers[key] = filtered_offers;
+
+            if (_.size(envoy._offers[key]) <= 0) {
+                delete envoy._offers[key];
+            }
         }
 
         return withdrawn;
@@ -63,5 +71,8 @@ if (_ && _.clone && Backbone && Backbone.Events) {
         }
     }
 
-    window.envoy = envoy;
+    var global_object = typeof window !== 'undefined' ? window
+                      : typeof GLOBAL !== 'undefined' ? GLOBAL
+                      : {};
+    global_object.envoy = envoy;
 }
