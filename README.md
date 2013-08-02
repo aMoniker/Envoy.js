@@ -70,6 +70,10 @@ envoy.solicit('breakfast', function(foods) {
 
 `envoy` can also be used as a simple global key/value store if you don't need the enhanced functionality of offer/solicit.
 
-Simply use: `envoy.store(key, value);`, `envoy.fetch(key);`, and `envoy.erase(key);`
+Simply use: `envoy.store(key, value);` to store a global value of any data type, then `envoy.fetch(key);` to retrieve it.
 
-Storing a key will overwrite any previous key of the same name. `key` and `value` can be any data type.
+Storing a key will overwrite any previous key of the same name.
+
+Use `envoy.erase(key);` to remove a key/val pair.
+
+Also, `envoy.rouse(key);` will invoke and return the result of any stored functions. What's neat is that it will also deep traverse a stored object or array, maintaining indexes and invoking all functions along the way.

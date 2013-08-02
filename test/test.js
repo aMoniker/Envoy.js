@@ -344,6 +344,62 @@ describe('envoy.fetch', function() {
     })
 });
 
+describe('envoy.rouse', function() {
+    beforeEach(function() {
+        test_storage_exists();
+    });
+
+    afterEach(function() {
+        clear_storage();
+    });
+
+    it('should invoke a stored function', function() {
+        envoy.store('test_func', function() { return 'so funky'; });
+        var roused = envoy.rouse('test_func');
+        roused.should.be.a('string');
+        roused.should.eql('so funky');
+    });
+
+    it('should deep traverse an array, invoking functions along the way', function() {
+        envoy.store('test_array', [
+             function() { return 'value 1'; }
+            ,'value 2'
+            ,[ function() { return 'value 3'; } ]
+        ]);
+        var roused = envoy.rouse('test_array');
+        roused.should.be.an.instanceof(Array);
+        roused.should.eql(['value 1', 'value 2', ['value 3']]);
+    });
+
+    it('should maintain array indexes', function() {
+        var test_array = [];
+        test_array[1] = 'foo';
+        test_array[42] = 'bar';
+        test_array[1337] = 'baz';
+        envoy.store('test_array', test_array);
+        var roused = envoy.rouse('test_array');
+        roused.should.be.an.instanceof(Array);
+        roused[1].should.eql('foo');
+        roused[42].should.eql('bar');
+        roused[1337].should.eql('baz');
+    });
+
+    it('should deep traverse an object, invoking functions along the way', function() {
+        envoy.store('test_object', {
+             'key1': 'value1'
+            ,'key2': function() { return 'value2'; }
+            ,'key3': { 'subkey1': function() { return 'subval1'; } }
+        });
+        var roused = envoy.rouse('test_object');
+        roused.should.be.a('object');
+        roused.should.eql({
+             'key1': 'value1'
+            ,'key2': 'value2'
+            ,'key3': { 'subkey1': 'subval1' }
+        });
+    });
+});
+
 describe('envoy.erase', function() {
     beforeEach(function() {
         test_storage_exists();

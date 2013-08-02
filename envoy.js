@@ -82,6 +82,25 @@ if (_ && _.clone && Backbone && Backbone.Events) {
         return envoy._storage[key];
     }
 
+    envoy.rouse = function(key) {
+        return envoy._rouseVal(envoy._storage[key]);
+    }
+
+    envoy._rouseVal = function(val) {
+        var ret, is_array;
+        if (_.isFunction(val)) {
+            ret = val();
+        } else if (is_array = _.isArray(val) || _.isObject(val)) {
+            ret = is_array ? [] : {};
+            _.each(val, function(v, i) {
+                ret[i] = envoy._rouseVal(v);
+            });
+        } else {
+            ret = val;
+        }
+        return ret;
+    }
+
     envoy.erase = function(key) {
         delete envoy._storage[key];
         return true;
