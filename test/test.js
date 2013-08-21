@@ -341,7 +341,14 @@ describe('envoy.fetch', function() {
                 should.equal(fetched, s.val);
             }
         });
-    })
+    });
+
+    it('should use defaults when necessary', function() {
+        envoy.fetch(1337).should.eql(2600);
+        envoy.fetch(1337, 1010).should.eql(2600);
+        envoy.fetch(1234, 4321).should.eql(4321);
+        should.equal(envoy.fetch(1234), undefined);
+    });
 });
 
 describe('envoy.rouse', function() {
@@ -397,6 +404,21 @@ describe('envoy.rouse', function() {
             ,'key2': 'value2'
             ,'key3': { 'subkey1': 'subval1' }
         });
+    });
+
+    it('should use defaults when necessary', function() {
+        envoy.store(1337, 2600);
+        envoy.rouse(1337).should.eql(2600);
+        envoy.rouse(1337, 1010).should.eql(2600);
+        envoy.rouse(1234, 4321).should.eql(4321);
+        should.equal(envoy.rouse(1234), undefined);
+
+        envoy.store('test_func', function() { return undefined; });
+        envoy.store('best_func', function() { return 'ham'; });
+        should.equal(envoy.rouse('test_func'), undefined);
+        envoy.rouse('test_func', 'okok').should.eql('okok');
+        envoy.rouse('best_func').should.eql('ham');
+        envoy.rouse('best_func', 'foobar').should.eql('ham');
     });
 });
 

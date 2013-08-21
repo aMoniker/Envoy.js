@@ -78,12 +78,13 @@ if (_ && _.clone && Backbone && Backbone.Events) {
         return value;
     }
 
-    envoy.fetch = function(key) {
-        return envoy._storage[key];
+    envoy.fetch = function(key, default_value) {
+        return envoy._storage[key] !== undefined ? envoy._storage[key] : default_value;
     }
 
-    envoy.rouse = function(key) {
-        return envoy._rouseVal(envoy._storage[key]);
+    envoy.rouse = function(key, default_value) {
+        var roused_value = envoy._rouseVal(envoy._storage[key]);
+        return roused_value !== undefined ? roused_value : default_value;
     }
 
     envoy._rouseVal = function(val) {

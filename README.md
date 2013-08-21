@@ -77,3 +77,5 @@ Storing a key will overwrite any previous key of the same name.
 Use `envoy.erase(key);` to remove a key/val pair.
 
 Also, `envoy.rouse(key);` will invoke and return the result of any stored functions. What's neat is that it will also deep traverse a stored object or array, maintaining indexes and invoking all functions along the way.
+
+Both `envoy.rouse()` and `envoy.fetch()` accept a second, optional parameter which will be returned if the result is undefined: `envoy.fetch('nonexistant', 'oh well, use this then')`.
