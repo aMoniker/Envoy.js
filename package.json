@@ -1,6 +1,6 @@
 {
     "name": "envoy.js",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "author": "Jim Greenleaf <james.a.greenleaf@gmail.com>",
     "description": "A reverse pub/sub wrapper for Backbone.Events",
     "repository": {
